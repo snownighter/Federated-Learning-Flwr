@@ -33,8 +33,7 @@ class CifarClient(fl.client.NumPyClient):
         reset.reset_keras()
         history = model.fit(x_train, y_train, validation_split=0.2, epochs=uts.mp.epochs , batch_size=uts.mp.batch_size) #fit
         if uts.drimg:
-            global round
-            uts.draw_img(history, cl_num, round); round += 1
+            uts.draw_img(history, cl_num, round)
         return model.get_weights(), len(x_train), {}
 
     def evaluate(self, parameters, config):
@@ -43,7 +42,8 @@ class CifarClient(fl.client.NumPyClient):
         loss, accuracy = model.evaluate(x_train, y_train) #evaluate train
         loss, accuracy = model.evaluate(x_test, y_test) #evaluate test
         if uts.wres:
-            uts.result(model, cl_num, round-1)
+            global round
+            uts.result(model, cl_num, round); round += 1
         # Update local model with global parameters
         model.set_weights(parameters) #weights
         return loss, len(x_test), {"accuracy": accuracy}

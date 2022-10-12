@@ -20,11 +20,7 @@ from sklearn.metrics import classification_report
 drimg = True # draw-img
 wres = True # write result
 
-import socket
-ip_address = socket.gethostbyname((socket.gethostname()))
-server_address = ip_address + ':8080'
-
-sv = server_address # server-address # 127.0.0.1:8080
+sv = "127.0.0.1:8080" # server-address # 127.0.0.1:8080
 rs = 10 # num-rounds
 model = 'Sequential' # model-name
 adam = optimizers.adam_v2.Adam(learning_rate=0.001) # optimizer
