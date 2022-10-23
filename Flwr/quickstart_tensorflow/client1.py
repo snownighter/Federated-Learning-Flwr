@@ -5,6 +5,7 @@ import tensorflow as tf
 
 # add package
 import utils as uts
+from flwr_server import flwr_round
 # free memory
 import reset_keras as reset
 # ignore warn
@@ -49,7 +50,7 @@ class CifarClient(fl.client.NumPyClient):
         model.set_weights(parameters) #weights
         reset.reset_keras()
         if uts.gres:
-            uts.global_result(model, round)
+            uts.global_result(model, round-1)
         return loss, len(x_test), {"accuracy": accuracy}
 
 
