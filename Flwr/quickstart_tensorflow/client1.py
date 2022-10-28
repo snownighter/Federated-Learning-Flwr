@@ -34,6 +34,7 @@ class CifarClient(fl.client.NumPyClient):
         history = model.fit(x_train, y_train, validation_split=0.2, epochs=uts.mp.epochs , batch_size=uts.mp.batch_size) #fit
         if uts.drimg:
             uts.draw_img(history, cl_num, round)
+        reset.reset_keras()
         return model.get_weights(), len(x_train), {}
 
     def evaluate(self, parameters, config):
@@ -46,6 +47,9 @@ class CifarClient(fl.client.NumPyClient):
             uts.result(model, cl_num, round); round += 1
         # Update local model with global parameters
         model.set_weights(parameters) #weights
+        reset.reset_keras()
+        if uts.gres:
+            uts.global_result(model, round-1)
         return loss, len(x_test), {"accuracy": accuracy}
 
 

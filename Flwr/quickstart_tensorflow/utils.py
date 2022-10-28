@@ -17,8 +17,9 @@ from sklearn.preprocessing import LabelEncoder
 #from sklearn.metrics import confusion_matrix, precision_score, f1_score, recall_score
 from sklearn.metrics import classification_report
 
-drimg = True # draw-img
-wres = True # write result
+drimg = False # draw-img
+wres, gres = True, True # write result
+relab = False
 
 sv = "127.0.0.1:8080" # server-address # 127.0.0.1:8080
 rs = 10 # num-rounds
@@ -27,8 +28,8 @@ adam = optimizers.adam_v2.Adam(learning_rate=0.001) # optimizer
 
 class model_fit:
     def __init__(self):
-        self.epochs = 50 #100
-        self.batch_size = 2048 #4096
+        self.epochs = 30 #100
+        self.batch_size = 512 #4096
 mp = model_fit()
 
 def load_data(num: int):
@@ -36,6 +37,10 @@ def load_data(num: int):
     train = pd.read_csv('../data/data-client' + str(num) + '.csv')
     size = pd.read_csv('../data/minmax-train.csv')
     test = pd.read_csv('../data/minmax-test.csv')
+    # remove
+    if relab:
+        remove = ['Facebook', 'GMail', 'GoogleDrive', 'Instagram']
+        train.iloc[train.iloc[:,10]==remove[num-1], 0:10] = 0
     # reprocess
     x_train, y_train = preprocess(shuffle(train), size)
     x_test, y_test = preprocess(shuffle(test), size)
@@ -113,3 +118,13 @@ def result(model, num, round):
     #f1 = f1_score(y_act, y_pre, average='macro')
     report = classification_report(y_act, y_pre, target_names=label, digits=4, output_dict=True)
     pd.DataFrame(report).transpose().to_csv('../result(tf1)/table/result client '+str(num)+' round '+str(round)+'.csv', index=True)
+
+def global_result(model, round):
+    test = pd.read_csv('../data/minmax-test.csv')
+    size = pd.read_csv('../data/minmax-train.csv')
+    x_test, y_test = preprocess(test, size)
+    label = y_test.columns.tolist() # label for classification_report
+    y_pre = np.argmax(model.predict(x_test), axis=1) # predict value
+    y_act = LabelEncoder().fit_transform(test.iloc[:, 10]) # actual value
+    report = classification_report(y_act, y_pre, target_names=label, digits=4, output_dict=True)
+    pd.DataFrame(report).transpose().to_csv('../result(tf1)/table/global-result round '+str(round)+'.csv', index=True)

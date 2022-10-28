@@ -34,6 +34,7 @@ class CifarClient(fl.client.NumPyClient):
         history = model.fit(x_train, y_train, validation_split=0.2, epochs=uts.mp.epochs , batch_size=uts.mp.batch_size) #fit
         if uts.drimg:
             uts.draw_img(history, cl_num, round)
+        reset.reset_keras()
         return model.get_weights(), len(x_train), {}
 
     def evaluate(self, parameters, config):
