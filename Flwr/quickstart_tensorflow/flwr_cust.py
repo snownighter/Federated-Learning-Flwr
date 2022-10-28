@@ -4,10 +4,17 @@ from flwr.server import Server
 from flwr.server.client_manager import ClientManager, SimpleClientManager
 from flwr.server.history import History
 from flwr.server.app import ServerConfig
+<<<<<<< HEAD
 from flwr.server.strategy import Strategy
 from flwr.common.logger import log
 from flwr.common import GRPC_MAX_MESSAGE_LENGTH
 from logging import INFO
+=======
+from flwr.server.strategy import FedAvg, Strategy
+from flwr.common.logger import log
+from flwr.common import GRPC_MAX_MESSAGE_LENGTH
+from logging import INFO, WARN
+>>>>>>> ca5288db1a53e9b996ccddc312fa365f48a26477
 
 from flwr.server import app
 from flwr_server import CustServer
@@ -24,6 +31,7 @@ def re_start_server(  # pylint: disable=too-many-arguments
     grpc_max_message_length: int = GRPC_MAX_MESSAGE_LENGTH,
     certificates: Optional[Tuple[bytes, bytes, bytes]] = None,
 ) -> History:
+<<<<<<< HEAD
     """Start a Flower server using the gRPC transport layer.
 
     Arguments
@@ -83,6 +91,12 @@ def re_start_server(  # pylint: disable=too-many-arguments
 
     # Initialize server and server config
     initialized_server, initialized_config = app._init_defaults(
+=======
+    """Start a Flower server using the gRPC transport layer. """
+
+    # Initialize server and server config
+    initialized_server, initialized_config = _init_defaults(
+>>>>>>> ca5288db1a53e9b996ccddc312fa365f48a26477
         server=server,
         config=config,
         strategy=strategy,
@@ -118,3 +132,28 @@ def re_start_server(  # pylint: disable=too-many-arguments
     grpc_server.stop(grace=1)
 
     return hist
+<<<<<<< HEAD
+=======
+
+def _init_defaults(
+    server: Optional[CustServer],
+    config: Optional[ServerConfig],
+    strategy: Optional[Strategy],
+    client_manager: Optional[ClientManager],
+) -> Tuple[Server, ServerConfig]:
+    # Create server instance if none was given
+    if server is None:
+        if client_manager is None:
+            client_manager = SimpleClientManager()
+        if strategy is None:
+            strategy = FedAvg()
+        server = CustServer(client_manager=client_manager, strategy=strategy)
+    elif strategy is not None:
+        log(WARN, "Both server and strategy were provided, ignoring strategy")
+
+    # Set default config values
+    if config is None:
+        config = ServerConfig()
+
+    return server, config
+>>>>>>> ca5288db1a53e9b996ccddc312fa365f48a26477
