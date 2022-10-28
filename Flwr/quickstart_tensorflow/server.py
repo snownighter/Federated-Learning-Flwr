@@ -15,19 +15,15 @@ strategy = FedAvg(
     fraction_fit=1,
 )
 
-# import socket
-# ip_address = socket.gethostbyname((socket.gethostname()))
-# server_address=ip_address + ':8080'
-client_manager=SimpleClientManager()
 # Start Flower server
-#fl.server.start_server(
-#    server_address=uts.sv,
-#    strategy=strategy,
-#    config=fl.server.ServerConfig(num_rounds=uts.rs), #rounds
-#)
-
-cuflwr.re_start_server(
+fl.server.start_server(
     server_address=uts.sv,
     strategy=strategy,
     config=fl.server.ServerConfig(num_rounds=uts.rs), #rounds
 )
+
+# cuflwr.re_start_server(
+#     server_address=uts.sv,
+#     strategy=strategy,
+#     config=fl.server.ServerConfig(num_rounds=uts.rs), #rounds
+# )
