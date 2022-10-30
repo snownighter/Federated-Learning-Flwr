@@ -22,6 +22,7 @@ fl.server.start_server(
     config=fl.server.ServerConfig(num_rounds=uts.sp.rs) #rounds
 )
 
+
 # cuflwr.re_start_server(
 #     server_address=uts.sp.sv,
 #     strategy=strategy,
