@@ -17,13 +17,13 @@ strategy = FedAvg(
 
 # Start Flower server
 fl.server.start_server(
-    server_address=uts.sv,
+    server_address=uts.sp.sv,
     strategy=strategy,
-    config=fl.server.ServerConfig(num_rounds=uts.rs), #rounds
+    config=fl.server.ServerConfig(num_rounds=uts.sp.rs) #rounds
 )
 
 # cuflwr.re_start_server(
-#     server_address=uts.sv,
+#     server_address=uts.sp.sv,
 #     strategy=strategy,
-#     config=fl.server.ServerConfig(num_rounds=uts.rs), #rounds
+#     config=fl.server.ServerConfig(num_rounds=uts.sp.rs) #rounds
 # )

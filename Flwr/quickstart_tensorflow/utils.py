@@ -17,20 +17,25 @@ from sklearn.preprocessing import LabelEncoder
 #from sklearn.metrics import confusion_matrix, precision_score, f1_score, recall_score
 from sklearn.metrics import classification_report
 
-drimg = True # draw-img
+drimg = False # draw-img
 wres, gres = True, True # write result
-relab = False
+relab = False # unbalance
 
-sv = "127.0.0.1:8080" # server-address # 127.0.0.1:8080
-rs = 2 # num-rounds
-model = 'Sequential' # model-name
-adam = optimizers.adam_v2.Adam(learning_rate=0.001) # optimizer
+class server_fit:
+    def __init__(self, round: int, lr=0.001) -> None:
+        self.sv = "127.0.0.1:8080" # server-address
+        self.rs = round # num-rounds
+        self.model = 'Sequential' # model-name
+        self.adam = optimizers.adam_v2.Adam(learning_rate=lr) # optimizer
+sp = server_fit(2, 0.01)
 
 class model_fit:
-    def __init__(self):
-        self.epochs = 5 #100
+    def __init__(self, epoch: int) -> None:
+        self.epochs = epoch #100
         self.batch_size = 512 #4096
-mp = model_fit()
+mp, epochlis = [], [10,10,10,50,50]
+for i in range(3):
+    mp.append(model_fit(epochlis[i]))
 
 def load_data(num: int):
     # read: train(client), test, vector_size
