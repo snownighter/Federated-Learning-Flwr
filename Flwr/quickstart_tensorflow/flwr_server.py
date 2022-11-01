@@ -1,25 +1,10 @@
 import timeit
 from logging import DEBUG, INFO
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Optional
 from flwr.common.logger import log
-from flwr.server.client_manager import ClientManager
 from flwr.server.history import History
-from flwr.server.strategy import FedAvg, Strategy
-from flwr.common import (
-    Code,
-    DisconnectRes,
-    EvaluateIns,
-    EvaluateRes,
-    FitIns,
-    FitRes,
-    Parameters,
-    ReconnectIns,
-    Scalar,
-)
 
-from flwr.server.server import FitResultsAndFailures
 from flwr.server.server import Server
-from flwr.server.server import fit_clients
 
 # free memory
 import reset_keras as reset
@@ -30,57 +15,70 @@ class CustServer(Server):
     #def __init__(self, *, client_manager: ClientManager, strategy: Optional[Strategy] = None) -> None:
     #    super().__init__(client_manager=client_manager, strategy=None)
 
-    def fit_round(
-        self,
-        server_round: int,
-        timeout: Optional[float],
-    ) -> Optional[
-        Tuple[Optional[Parameters], Dict[str, Scalar], FitResultsAndFailures]
-    ]:
-        """Perform a single round of federated averaging."""
+    def fit(self, num_rounds: int, timeout: Optional[float]) -> History:
+        """Run federated averaging for a number of rounds."""
+        history = History()
 
-        # Get clients and their respective instructions from strategy
-        client_instructions = self.strategy.configure_fit(
-            server_round=server_round,
-            parameters=self.parameters,
-            client_manager=self._client_manager,
-        )
+        # Initialize parameters
+        log(INFO, "Initializing global parameters")
+        self.parameters = self._get_initial_parameters(timeout=timeout)
+        log(INFO, "Evaluating initial parameters")
+        res = self.strategy.evaluate(0, parameters=self.parameters)
+        if res is not None:
+            log(
+                INFO,
+                "initial parameters (loss, other metrics): %s, %s",
+                res[0],
+                res[1],
+            )
+            history.add_loss_centralized(server_round=0, loss=res[0])
+            history.add_metrics_centralized(server_round=0, metrics=res[1])
 
-        # record current round
-        global flwr_round
-        flwr_round = server_round
-        reset.reset_keras()
+        # Run federated learning for num_rounds
+        log(INFO, "FL starting")
+        start_time = timeit.default_timer()
 
-        if not client_instructions:
-            log(INFO, "fit_round %s: no clients selected, cancel", server_round)
-            return None
-        log(
-            DEBUG,
-            "fit_round %s: strategy sampled %s clients (out of %s)",
-            server_round,
-            len(client_instructions),
-            self._client_manager.num_available(),
-        )
+        for current_round in range(1, num_rounds + 1):
+            # Train model and replace previous global model
+            reset.reset_keras()
+            res_fit = self.fit_round(server_round=current_round, timeout=timeout)
+            if res_fit:
+                parameters_prime, _, _ = res_fit  # fit_metrics_aggregated
+                if parameters_prime:
+                    self.parameters = parameters_prime
 
-        # Collect `fit` results from all clients participating in this round
-        results, failures = fit_clients(
-            client_instructions=client_instructions,
-            max_workers=self.max_workers,
-            timeout=timeout,
-        )
-        log(
-            DEBUG,
-            "fit_round %s received %s results and %s failures",
-            server_round,
-            len(results),
-            len(failures),
-        )
+            # Evaluate model using strategy implementation
+            res_cen = self.strategy.evaluate(current_round, parameters=self.parameters)
+            if res_cen is not None:
+                loss_cen, metrics_cen = res_cen
+                log(
+                    INFO,
+                    "fit progress: (%s, %s, %s, %s)",
+                    current_round,
+                    loss_cen,
+                    metrics_cen,
+                    timeit.default_timer() - start_time,
+                )
+                history.add_loss_centralized(server_round=current_round, loss=loss_cen)
+                history.add_metrics_centralized(
+                    server_round=current_round, metrics=metrics_cen
+                )
 
-        # Aggregate training results
-        aggregated_result: Tuple[
-            Optional[Parameters],
-            Dict[str, Scalar],
-        ] = self.strategy.aggregate_fit(server_round, results, failures)
+            # Evaluate model on a sample of available clients
+            reset.reset_keras()
+            res_fed = self.evaluate_round(server_round=current_round, timeout=timeout)
+            if res_fed:
+                loss_fed, evaluate_metrics_fed, _ = res_fed
+                if loss_fed:
+                    history.add_loss_distributed(
+                        server_round=current_round, loss=loss_fed
+                    )
+                    history.add_metrics_distributed(
+                        server_round=current_round, metrics=evaluate_metrics_fed
+                    )
 
-        parameters_aggregated, metrics_aggregated = aggregated_result
-        return parameters_aggregated, metrics_aggregated, (results, failures)
+        # Bookkeeping
+        end_time = timeit.default_timer()
+        elapsed = end_time - start_time
+        log(INFO, "FL finished in %s", elapsed)
+        return history
