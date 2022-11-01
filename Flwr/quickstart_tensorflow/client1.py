@@ -1,11 +1,8 @@
 import os
-import flwr as fl
-
-import tensorflow as tf
+import flandre as fl
 
 # add package
 import utils as uts
-from flwr_server import flwr_round
 # free memory
 import reset_keras as reset
 # ignore warn

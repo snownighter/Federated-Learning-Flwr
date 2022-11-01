@@ -34,10 +34,12 @@ import utils as uts
 #    #print(y_pre)
 #    print(y_act)
 #    pd.DataFrame(y_act).to_csv('../result(tf1)/test.csv', index=True)
-def c():
-    (x_train, y_train), (x_test, y_test) = uts.load_data(1)
-    print(x_train.shape)
-    print(y_train.shape)
-    t = pd.concat([x_train, y_train], axis=1)
-    print(t[t.iloc[:,-20]==1].iloc[:,-50:-26])
-c()
+#def c():
+#    (x_train, y_train), (x_test, y_test) = uts.load_data(1)
+#    print(x_train.shape)
+#    print(y_train.shape)
+#    t = pd.concat([x_train, y_train], axis=1)
+#    print(t[t.iloc[:,-20]==1].iloc[:,-50:-26])
+import numpy as np
+a = [5,20,30,50]
+print([a[i] for i in [0,1,2]])

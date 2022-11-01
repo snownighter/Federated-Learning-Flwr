@@ -1,7 +1,5 @@
 import os
-import flwr as fl
-
-import tensorflow as tf
+import flandre as fl
 
 # add package
 import utils as uts

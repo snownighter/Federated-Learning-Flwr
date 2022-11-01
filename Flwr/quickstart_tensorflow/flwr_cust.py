@@ -11,6 +11,7 @@ from logging import INFO, WARN
 
 from flwr.server import app
 from flwr_server import CustServer
+from flwrCust.flwr_ClientManager import CustClientManager
 
 DEFAULT_SERVER_ADDRESS = "[::]:8080"
 
@@ -73,7 +74,7 @@ def _init_defaults(
     # Create server instance if none was given
     if server is None:
         if client_manager is None:
-            client_manager = SimpleClientManager()
+            client_manager = CustClientManager()
         if strategy is None:
             strategy = FedAvg()
         server = CustServer(client_manager=client_manager, strategy=strategy)
@@ -85,3 +86,4 @@ def _init_defaults(
         config = ServerConfig()
 
     return server, config
+
