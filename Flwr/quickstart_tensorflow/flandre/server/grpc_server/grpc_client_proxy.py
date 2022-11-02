@@ -16,11 +16,11 @@
 
 from typing import Optional
 
-from flandre import common
-from flandre.common import serde
-from flandre.proto.transport_pb2 import ClientMessage, ServerMessage
-from flandre.server.client_proxy import ClientProxy
-from flandre.server.grpc_server.grpc_bridge import GRPCBridge, InsWrapper, ResWrapper
+from flwr import common
+from flwr.common import serde
+from flwr.proto.transport_pb2 import ClientMessage, ServerMessage
+from flwr.server.client_proxy import ClientProxy
+from flwr.server.grpc_server.grpc_bridge import GRPCBridge, InsWrapper, ResWrapper
 
 
 class GrpcClientProxy(ClientProxy):

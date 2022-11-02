@@ -38,6 +38,9 @@ from flwr.server.client_proxy import ClientProxy
 from flwr.server.history import History
 from flwr.server.strategy import FedAvg, Strategy
 
+# free memory
+import reset_keras as reset
+
 FitResultsAndFailures = Tuple[
     List[Tuple[ClientProxy, FitRes]],
     List[Union[Tuple[ClientProxy, FitRes], BaseException]],
@@ -90,7 +93,7 @@ class Server:
         if res is not None:
             log(
                 INFO,
-                "initial parameters (loss, other metrics): %s, %s",
+                "initial parameters (loss, other metrics)11111111111111111111111111: %s, %s",
                 res[0],
                 res[1],
             )
@@ -103,6 +106,7 @@ class Server:
 
         for current_round in range(1, num_rounds + 1):
             # Train model and replace previous global model
+            reset.reset_keras()
             res_fit = self.fit_round(server_round=current_round, timeout=timeout)
             if res_fit:
                 parameters_prime, _, _ = res_fit  # fit_metrics_aggregated
@@ -127,6 +131,7 @@ class Server:
                 )
 
             # Evaluate model on a sample of available clients
+            reset.reset_keras()
             res_fed = self.evaluate_round(server_round=current_round, timeout=timeout)
             if res_fed:
                 loss_fed, evaluate_metrics_fed, _ = res_fed

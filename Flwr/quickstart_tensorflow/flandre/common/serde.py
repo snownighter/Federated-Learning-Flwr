@@ -17,7 +17,7 @@
 
 from typing import Any, List, cast
 
-from flandre.proto.transport_pb2 import (
+from flwr.proto.transport_pb2 import (
     ClientMessage,
     Code,
     Parameters,

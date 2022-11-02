@@ -21,6 +21,7 @@ server/client_manager.py
 server/client_proxy.py
 server/criterion.py
 server/history.py
+server/reset_keras.py
 server/server.py
 simulation/__init__.py
 simulation/app.py

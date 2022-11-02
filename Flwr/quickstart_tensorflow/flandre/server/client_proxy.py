@@ -18,7 +18,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from flandre.common import (
+from flwr.common import (
     DisconnectRes,
     EvaluateIns,
     EvaluateRes,

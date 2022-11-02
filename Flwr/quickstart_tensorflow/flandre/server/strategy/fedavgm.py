@@ -21,7 +21,7 @@ Paper: https://arxiv.org/pdf/1909.06335.pdf
 from logging import WARNING
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-from flandre.common import (
+from flwr.common import (
     FitRes,
     MetricsAggregationFn,
     NDArrays,
@@ -30,9 +30,9 @@ from flandre.common import (
     ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
-from flandre.common.logger import log
-from flandre.server.client_manager import ClientManager
-from flandre.server.client_proxy import ClientProxy
+from flwr.common.logger import log
+from flwr.server.client_manager import ClientManager
+from flwr.server.client_proxy import ClientProxy
 
 from .aggregate import aggregate
 from .fedavg import FedAvg

@@ -18,7 +18,7 @@
 from logging import WARNING
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-from flandre.common import (
+from flwr.common import (
     EvaluateRes,
     FitRes,
     MetricsAggregationFn,
@@ -28,8 +28,8 @@ from flandre.common import (
     ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
-from flandre.common.logger import log
-from flandre.server.client_proxy import ClientProxy
+from flwr.common.logger import log
+from flwr.server.client_proxy import ClientProxy
 
 from .aggregate import aggregate, weighted_loss_avg
 from .fedavg import FedAvg

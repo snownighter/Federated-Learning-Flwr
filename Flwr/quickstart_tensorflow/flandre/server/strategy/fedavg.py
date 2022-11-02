@@ -21,7 +21,7 @@ Paper: https://arxiv.org/abs/1602.05629
 from logging import WARNING
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-from flandre.common import (
+from flwr.common import (
     EvaluateIns,
     EvaluateRes,
     FitIns,

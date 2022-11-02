@@ -23,7 +23,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Union, cast
 
 import numpy as np
 
-from flandre.common import (
+from flwr.common import (
     EvaluateIns,
     EvaluateRes,
     FitIns,
@@ -33,8 +33,8 @@ from flandre.common import (
     Parameters,
     Scalar,
 )
-from flandre.server.client_manager import ClientManager
-from flandre.server.client_proxy import ClientProxy
+from flwr.server.client_manager import ClientManager
+from flwr.server.client_proxy import ClientProxy
 
 from .aggregate import aggregate, weighted_loss_avg
 from .strategy import Strategy

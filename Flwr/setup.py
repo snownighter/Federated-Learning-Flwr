@@ -4,7 +4,7 @@ setup(
     name = 'flandre',
     packages = ['client','common','proto','server','simulation'],
     scripts = [],
-    version = '1.1.0',
+    version = '1.0.1',
     description = 'Flower Flandre Project',
     author = 'Snighter',
     author_email = 'daniel44209350@gmail.com',

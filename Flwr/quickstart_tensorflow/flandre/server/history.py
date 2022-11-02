@@ -17,7 +17,7 @@
 from functools import reduce
 from typing import Dict, List, Tuple
 
-from flandre.common.typing import Scalar
+from flwr.common.typing import Scalar
 
 
 class History:

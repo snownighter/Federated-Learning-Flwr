@@ -19,13 +19,13 @@ from dataclasses import dataclass
 from logging import INFO, WARN
 from typing import Optional, Tuple
 
-from flandre.common import GRPC_MAX_MESSAGE_LENGTH
-from flandre.common.logger import log
-from flandre.server.client_manager import ClientManager, SimpleClientManager
-from flandre.server.grpc_server.grpc_server import start_grpc_server
-from flandre.server.history import History
+from flwr.common import GRPC_MAX_MESSAGE_LENGTH
+from flwr.common.logger import log
+from flwr.server.client_manager import ClientManager, SimpleClientManager
+from flwr.server.grpc_server.grpc_server import start_grpc_server
+from flwr.server.history import History
 from flandre.server.server import Server
-from flandre.server.strategy import FedAvg, Strategy
+from flwr.server.strategy import FedAvg, Strategy
 
 DEFAULT_SERVER_ADDRESS = "[::]:8080"
 
@@ -52,62 +52,6 @@ def start_server(  # pylint: disable=too-many-arguments
     grpc_max_message_length: int = GRPC_MAX_MESSAGE_LENGTH,
     certificates: Optional[Tuple[bytes, bytes, bytes]] = None,
 ) -> History:
-    """Start a Flower server using the gRPC transport layer.
-
-    Arguments
-    ---------
-        server_address: Optional[str] (default: `"[::]:8080"`). The IPv6
-            address of the server.
-        server: Optional[flwr.server.Server] (default: None). An implementation
-            of the abstract base class `flwr.server.Server`. If no instance is
-            provided, then `start_server` will create one.
-        config: ServerConfig (default: None).
-            Currently supported values are `num_rounds` (int, default: 1) and
-            `round_timeout` in seconds (float, default: None).
-        strategy: Optional[flwr.server.Strategy] (default: None). An
-            implementation of the abstract base class `flwr.server.Strategy`.
-            If no strategy is provided, then `start_server` will use
-            `flwr.server.strategy.FedAvg`.
-        client_manager: Optional[flwr.server.ClientManager] (default: None)
-            An implementation of the abstract base class `flwr.server.ClientManager`.
-            If no implementation is provided, then `start_server` will use
-            `flwr.server.client_manager.SimpleClientManager`.
-        grpc_max_message_length: int (default: 536_870_912, this equals 512MB).
-            The maximum length of gRPC messages that can be exchanged with the
-            Flower clients. The default should be sufficient for most models.
-            Users who train very large models might need to increase this
-            value. Note that the Flower clients need to be started with the
-            same value (see `flwr.client.start_client`), otherwise clients will
-            not know about the increased limit and block larger messages.
-        certificates : Tuple[bytes, bytes, bytes] (default: None)
-            Tuple containing root certificate, server certificate, and private key to
-            start a secure SSL-enabled server. The tuple is expected to have three bytes
-            elements in the following order:
-
-                * CA certificate.
-                * server certificate.
-                * server private key.
-
-    Returns
-    -------
-        hist: flwr.server.history.History. Object containing metrics from training.
-
-    Examples
-    --------
-    Starting an insecure server:
-
-    >>> start_server()
-
-    Starting a SSL-enabled server:
-
-    >>> start_server(
-    >>>     certificates=(
-    >>>         Path("/crts/root.pem").read_bytes(),
-    >>>         Path("/crts/localhost.crt").read_bytes(),
-    >>>         Path("/crts/localhost.key").read_bytes()
-    >>>     )
-    >>> )
-    """
 
     # Initialize server and server config
     initialized_server, initialized_config = _init_defaults(

@@ -19,13 +19,13 @@ import time
 from logging import INFO
 from typing import Callable, Dict, Optional, Union
 
-from flandre.common import (
+from flwr.common import (
     GRPC_MAX_MESSAGE_LENGTH,
     ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
-from flandre.common.logger import log
-from flandre.common.typing import (
+from flwr.common.logger import log
+from flwr.common.typing import (
     Code,
     EvaluateIns,
     EvaluateRes,
