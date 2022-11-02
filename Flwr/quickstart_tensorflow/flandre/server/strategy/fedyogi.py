@@ -23,7 +23,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
-from flwr.common import (
+from flandre.common import (
     FitRes,
     MetricsAggregationFn,
     NDArrays,
@@ -32,7 +32,7 @@ from flwr.common import (
     ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
-from flwr.server.client_proxy import ClientProxy
+from flandre.server.client_proxy import ClientProxy
 
 from .fedopt import FedOpt
 

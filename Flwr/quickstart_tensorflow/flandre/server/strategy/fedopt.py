@@ -21,7 +21,7 @@ Paper: https://arxiv.org/abs/2003.00295
 
 from typing import Callable, Dict, Optional, Tuple
 
-from flwr.common import (
+from flandre.common import (
     MetricsAggregationFn,
     NDArrays,
     Parameters,

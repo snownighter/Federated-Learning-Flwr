@@ -20,7 +20,7 @@ import timeit
 from logging import DEBUG, INFO
 from typing import Dict, List, Optional, Tuple, Union
 
-from flwr.common import (
+from flandre.common import (
     Code,
     DisconnectRes,
     EvaluateIns,
@@ -31,12 +31,12 @@ from flwr.common import (
     ReconnectIns,
     Scalar,
 )
-from flwr.common.logger import log
-from flwr.common.typing import GetParametersIns
-from flwr.server.client_manager import ClientManager
-from flwr.server.client_proxy import ClientProxy
-from flwr.server.history import History
-from flwr.server.strategy import FedAvg, Strategy
+from flandre.common.logger import log
+from flandre.common.typing import GetParametersIns
+from flandre.server.client_manager import ClientManager
+from flandre.server.client_proxy import ClientProxy
+from flandre.server.history import History
+from flandre.server.strategy import FedAvg, Strategy
 
 FitResultsAndFailures = Tuple[
     List[Tuple[ClientProxy, FitRes]],

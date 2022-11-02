@@ -18,9 +18,9 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List, Optional, Tuple, Union
 
-from flwr.common import EvaluateIns, EvaluateRes, FitIns, FitRes, Parameters, Scalar
-from flwr.server.client_manager import ClientManager
-from flwr.server.client_proxy import ClientProxy
+from flandre.common import EvaluateIns, EvaluateRes, FitIns, FitRes, Parameters, Scalar
+from flandre.server.client_manager import ClientManager
+from flandre.server.client_proxy import ClientProxy
 
 
 class Strategy(ABC):

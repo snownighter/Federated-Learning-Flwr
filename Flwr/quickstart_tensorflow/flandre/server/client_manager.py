@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 from logging import INFO
 from typing import Dict, List, Optional
 
-from flwr.common.logger import log
+from flandre.common.logger import log
 
 from .client_proxy import ClientProxy
 from .criterion import Criterion

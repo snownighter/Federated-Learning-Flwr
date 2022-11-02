@@ -23,7 +23,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
-from flwr.common import (
+from flandre.common import (
     EvaluateIns,
     EvaluateRes,
     FitIns,
@@ -35,9 +35,9 @@ from flwr.common import (
     ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
-from flwr.common.logger import log
-from flwr.server.client_manager import ClientManager
-from flwr.server.client_proxy import ClientProxy
+from flandre.common.logger import log
+from flandre.server.client_manager import ClientManager
+from flandre.server.client_proxy import ClientProxy
 
 from .aggregate import aggregate_qffl, weighted_loss_avg
 from .fedavg import FedAvg

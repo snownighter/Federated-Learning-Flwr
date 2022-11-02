@@ -17,7 +17,7 @@
 
 from abc import ABC
 
-from flwr.common import (
+from flandre.common import (
     EvaluateIns,
     EvaluateRes,
     FitIns,

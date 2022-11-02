@@ -22,11 +22,11 @@ from typing import Callable, Iterator
 import grpc
 from iterators import TimeoutIterator
 
-from flwr.proto import transport_pb2_grpc
-from flwr.proto.transport_pb2 import ClientMessage, ServerMessage
-from flwr.server.client_manager import ClientManager
-from flwr.server.grpc_server.grpc_bridge import GRPCBridge, InsWrapper, ResWrapper
-from flwr.server.grpc_server.grpc_client_proxy import GrpcClientProxy
+from flandre.proto import transport_pb2_grpc
+from flandre.proto.transport_pb2 import ClientMessage, ServerMessage
+from flandre.server.client_manager import ClientManager
+from flandre.server.grpc_server.grpc_bridge import GRPCBridge, InsWrapper, ResWrapper
+from flandre.server.grpc_server.grpc_client_proxy import GrpcClientProxy
 
 
 def default_bridge_factory() -> GRPCBridge:

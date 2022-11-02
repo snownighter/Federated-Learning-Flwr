@@ -18,7 +18,7 @@
 from abc import ABC
 from typing import Dict, Tuple
 
-from flwr.common import Config, NDArrays, Scalar
+from flandre.common import Config, NDArrays, Scalar
 
 
 class NumPyClient(ABC):

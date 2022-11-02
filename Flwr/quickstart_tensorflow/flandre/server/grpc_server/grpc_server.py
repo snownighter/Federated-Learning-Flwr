@@ -22,11 +22,11 @@ from typing import Optional, Tuple
 
 import grpc
 
-from flwr.common import GRPC_MAX_MESSAGE_LENGTH
-from flwr.common.logger import log
-from flwr.proto import transport_pb2_grpc
-from flwr.server.client_manager import ClientManager
-from flwr.server.grpc_server import flower_service_servicer as fss
+from flandre.common import GRPC_MAX_MESSAGE_LENGTH
+from flandre.common.logger import log
+from flandre.proto import transport_pb2_grpc
+from flandre.server.client_manager import ClientManager
+from flandre.server.grpc_server import flower_service_servicer as fss
 
 INVALID_CERTIFICATES_ERR_MSG = """
     When setting any of root_certificate, certificate, or private_key,

@@ -20,7 +20,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from flwr.common import NDArrays
+from flandre.common import NDArrays
 
 
 def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:

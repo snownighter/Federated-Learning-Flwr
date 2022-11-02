@@ -22,9 +22,9 @@ try:
 except ImportError:
     tf = None
 
-from flwr.common import EvaluateRes, Scalar
-from flwr.server.client_proxy import ClientProxy
-from flwr.server.strategy import Strategy
+from flandre.common import EvaluateRes, Scalar
+from flandre.server.client_proxy import ClientProxy
+from flandre.server.strategy import Strategy
 
 TBW = TypeVar("TBW")
 
