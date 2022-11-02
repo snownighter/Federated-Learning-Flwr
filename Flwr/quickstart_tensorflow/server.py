@@ -2,8 +2,6 @@ import flandre as fl
 from flandre.server.strategy import FedAvg
 
 import utils as uts
-import flwr_cust as cuflwr
-from flwr_server import CustServer
 
 # FedAvg is the default strategy used when you start the server without a custom strategy
 strategy = FedAvg(

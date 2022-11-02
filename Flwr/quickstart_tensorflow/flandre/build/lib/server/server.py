@@ -93,7 +93,7 @@ class Server:
         if res is not None:
             log(
                 INFO,
-                "initial parameters (loss, other metrics)11111111111111111111111111: %s, %s",
+                "initial parameters (loss, other metrics): %s, %s",
                 res[0],
                 res[1],
             )
