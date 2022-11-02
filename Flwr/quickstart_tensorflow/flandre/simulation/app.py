@@ -21,14 +21,14 @@ from typing import Any, Callable, Dict, List, Optional
 
 import ray
 
-from flwr.client.client import Client
-from flwr.common.logger import log
-from flwr.server import Server
-from flwr.server.app import ServerConfig, _fl, _init_defaults
-from flwr.server.client_manager import ClientManager
-from flwr.server.history import History
-from flwr.server.strategy import Strategy
-from flwr.simulation.ray_transport.ray_client_proxy import RayClientProxy
+from flandre.client.client import Client
+from flandre.common.logger import log
+from flandre.server import Server
+from flandre.server.app import ServerConfig, _fl, _init_defaults
+from flandre.server.client_manager import ClientManager
+from flandre.server.history import History
+from flandre.server.strategy import Strategy
+from flandre.simulation.ray_transport.ray_client_proxy import RayClientProxy
 
 INVALID_ARGUMENTS_START_SIMULATION = """
 INVALID ARGUMENTS ERROR
