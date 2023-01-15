@@ -31,7 +31,7 @@ from flwr.common import (
     ReconnectIns,
     Scalar,
 )
-from flwr.common.logger import log
+from flandre.common.logger import log
 from flwr.common.typing import GetParametersIns
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy

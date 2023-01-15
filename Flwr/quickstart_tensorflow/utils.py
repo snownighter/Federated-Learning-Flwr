@@ -14,27 +14,35 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 # result
 from sklearn.preprocessing import LabelEncoder
-#from sklearn.metrics import confusion_matrix, precision_score, f1_score, recall_score
 from sklearn.metrics import classification_report
+# confusion matrix for global model
+from sklearn.metrics import confusion_matrix, precision_score, f1_score, recall_score
+import seaborn as sns
 
 drimg = False # draw-img
+drmat = True
 wres, gres = True, True # write result
 relab = False # unbalance
 
+# The number of ...
+N  = 2 # client
+GR = 2 # global round
+LR = 0.01 # learning rate
+
 class server_fit:
-    def __init__(self, round: int, lr=0.001) -> None:
+    def __init__(self, round=10, lr=0.001) -> None:
         self.sv = "127.0.0.1:8080" # server-address
         self.rs = round # num-rounds
         self.model = 'Sequential' # model-name
         self.adam = optimizers.adam_v2.Adam(learning_rate=lr) # optimizer
-sp = server_fit(2, 0.01)
+sp = server_fit(GR, LR)
 
 class model_fit:
-    def __init__(self, epoch: int) -> None:
+    def __init__(self, epoch=50) -> None:
         self.epochs = epoch #100
         self.batch_size = 512 #4096
-mp, epochlis = [], [10,10,10,50,50]
-for i in range(3):
+mp, epochlis = [], [1,1,1,1,1] #[50,50,50,50,50]
+for i in range(N):
     mp.append(model_fit(epochlis[i]))
 
 def load_data(num: int):
@@ -56,9 +64,16 @@ def preprocess(data: pd.DataFrame, size):
     str_name = ['src_ip', 'dst_ip', 'server_port', 'prot']
     num_name = ['p_count', 'b_count', 'max_size', 'min_size', 'abyte_count', 'sbyte_count']
     # 分割資料: string-type feature, label
-    X_str, Y_lab = data.loc[:, str_name], data.iloc[:, 10]
+    X_str, Y_orlab = data.loc[:, str_name], data.iloc[:, 10]
     # [label]: One-hot編碼
-    Y_lab = pd.get_dummies(Y_lab, prefix_sep='')
+    Y_lab = pd.get_dummies(Y_orlab, prefix_sep='')
+    # reshape [label]
+    label = list(sorted(set(size.iloc[:, 10])))
+    lab = list(sorted(set(Y_orlab)))
+    li = []
+    for i in label:
+        if i not in lab: li.append(label.index(i)) #print('ex', i)
+    for i in li: Y_lab.insert(i, label[i], 0)
     # [feature]: hash-vector transformer
     vector_size = np.zeros(4, dtype=np.int32) # set hash-vector
     for i in range(4): # static vector-size
@@ -133,3 +148,20 @@ def global_result(model, round):
     y_act = LabelEncoder().fit_transform(test.iloc[:, 10]) # actual value
     report = classification_report(y_act, y_pre, target_names=label, digits=4, output_dict=True)
     pd.DataFrame(report).transpose().to_csv('../result(tf1)/table/global-result round '+str(round)+'.csv', index=True)
+    if drmat:
+        draw_matrix(label, y_act, y_pre, round)
+
+def draw_matrix(label, act, pred, round):
+    # Sets the labels
+    mat = confusion_matrix(act, pred)
+    conf_matrix = pd.DataFrame(mat, index=label, columns=label)
+
+    # plot size setting
+    fig, ax = plt.subplots(figsize=(18, 15))
+    sns.heatmap(conf_matrix, annot=True, fmt='d', annot_kws={"size": 8}, cmap="Blues")
+    plt.ylabel('Actuals', fontsize=12)
+    plt.xlabel('Predictions', fontsize=12)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.savefig('../result(tf1)/img/Confusion-matrix global round '+str(round)+'.png')
+    plt.close()

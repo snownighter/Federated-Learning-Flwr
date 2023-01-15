@@ -16,7 +16,7 @@ round = 1 # global-round
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3" #verbose
 
 # Load model and data (MobileNetV2, CIFAR-10)
-(x_train, y_train), (x_test, y_test) = uts.load_data(num=3) #read data
+(x_train, y_train), (x_test, y_test) = uts.load_data(num=cl_num) #read data
 model = uts.new_model(name=uts.sp.model, input_size=x_train.shape[1]) #def model
 model.compile(loss="categorical_crossentropy", optimizer=uts.sp.adam, metrics=["accuracy"]) #compile
 
@@ -29,7 +29,7 @@ class CifarClient(fl.client.NumPyClient):
         # Update local model parameters
         model.set_weights(parameters) #weights
         reset.reset_keras()
-        history = model.fit(x_train, y_train, validation_split=0.2, epochs=uts.mp[cl_num].epochs , batch_size=uts.mp[cl_num].batch_size) #fit
+        history = model.fit(x_train, y_train, validation_split=0.2, epochs=uts.mp[cl_num-1].epochs , batch_size=uts.mp[cl_num-1].batch_size) #fit
         if uts.drimg:
             uts.draw_img(history, cl_num, round)
         reset.reset_keras()

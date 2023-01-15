@@ -20,7 +20,7 @@ from logging import INFO, WARN
 from typing import Optional, Tuple
 
 from flwr.common import GRPC_MAX_MESSAGE_LENGTH
-from flwr.common.logger import log
+from flandre.common.logger import log
 from flwr.server.client_manager import ClientManager, SimpleClientManager
 from flwr.server.grpc_server.grpc_server import start_grpc_server
 from flwr.server.history import History

@@ -24,7 +24,7 @@ from flwr.common import (
     ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
-from flwr.common.logger import log
+from flandre.common.logger import log
 from flwr.common.typing import (
     Code,
     EvaluateIns,
