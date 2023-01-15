@@ -1,4 +1,5 @@
 from logging import WARNING
+from functools import reduce
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 from flandre.common import (
@@ -38,6 +39,23 @@ connected to the server. `min_available_clients` must be set to a value larger
 than or equal to the values of `min_fit_clients` and `min_evaluate_clients`.
 """
 N, C = 5, 1.0
+
+def aggregate(results: List[Tuple[NDArrays, int]]) -> NDArrays:
+    """Compute weighted average."""
+    # Calculate the total number of examples used during training
+    num_examples_total = sum([num_examples for _, num_examples in results])
+
+    # Create a list of weights, each multiplied by the related number of examples
+    weighted_weights = [
+        [layer * num_examples for layer in weights] for weights, num_examples in results
+    ]
+
+    # Compute average weights of each layer
+    weights_prime: NDArrays = [
+        reduce(np.add, layer_updates) / num_examples_total
+        for layer_updates in zip(*weighted_weights)
+    ]
+    return weights_prime
 
 class FedFlan(FedAvg):
     """Configurable FedFlandre strategy implementation."""
