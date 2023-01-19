@@ -19,7 +19,8 @@ from flandre.server.client_manager import ClientManager
 from flandre.server.client_proxy import ClientProxy
 
 from flandre.server.strategy import FedAvg
-from flandre.server.strategy.aggregate import aggregate, weighted_loss_avg
+#from flandre.server.strategy.aggregate import aggregate
+from flandre.server.strategy.aggregate import weighted_loss_avg
 from flandre.server.strategy.strategy import Strategy
 
 import pandas as pd
