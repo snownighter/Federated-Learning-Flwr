@@ -4,7 +4,7 @@ from flandre.server.strategy import FedAvg, FedAvgM, QFedAvg
 import utils as uts
 from FedFlan import FedFlan
 
-N = 2
+N = 5
 AVG = 'AvgM'
 
 # FedAvg is the default strategy used when you start the server without a custom strategy

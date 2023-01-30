@@ -168,6 +168,10 @@ class FedAvgM(FedAvg):
         ]
 
         fedavg_result = aggregate(weights_results)
+        if server_round == 1:
+            from tensorflow.python.keras import models
+            model = models.load_model('./save-model/model.h5', compile=False)
+            self.initial_parameters = ndarrays_to_parameters(model.get_weights())
         # following convention described in
         # https://pytorch.org/docs/stable/generated/torch.optim.SGD.html
         if self.server_opt:

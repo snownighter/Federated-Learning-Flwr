@@ -19,15 +19,18 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix, precision_score, f1_score, recall_score
 import seaborn as sns
 
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 drimg = False # draw-img
 drmat = True
 wres, gres = True, True # write result
 relab = False # unbalance
 
 # The number of ...
-N  = 2 # client
-GR = 2 # global round
-LR = 0.01 # learning rate
+N  = 5 # client
+GR = 10 # global round
+LR = 0.001 # learning rate
 
 class server_fit:
     def __init__(self, round=10, lr=0.001) -> None:
@@ -41,7 +44,7 @@ class model_fit:
     def __init__(self, epoch=50) -> None:
         self.epochs = epoch #100
         self.batch_size = 512 #4096
-mp, epochlis = [], [1,1,1,1,1] #[50,50,50,50,50]
+mp, epochlis = [], [50,50,50,50,50] #[1,1,1,1,1] 
 for i in range(N):
     mp.append(model_fit(epochlis[i]))
 
@@ -98,15 +101,12 @@ def new_model(name: str, input_size: int):
     if   name == 'MobileNetV2':
         model = tf.keras.applications.MobileNetV2((32, 32, 3), classes=10, weights=None)
     elif name == 'Sequential':
+        It = tf.random_normal_initializer()
         model = models.Sequential()
-        model.add(layers.Dense(256, input_dim=input_size, activation='relu'))
-        model.add(layers.Dense(256, activation='relu'))
+        model.add(layers.Dense(256, input_dim=input_size, activation='relu', kernel_initializer=It))
+        model.add(layers.Dense(256, activation='relu', kernel_initializer=It))
         model.add(layers.Dropout(.2))
-        #model.add(layers.Dense(256, activation='relu'))
-        #model.add(layers.Dropout(.2))
-        #model.add(layers.Dense(256, activation='relu'))
-        #model.add(layers.Dropout(.2))
-        model.add(layers.Dense(25, activation='softmax'))
+        model.add(layers.Dense(4, activation='softmax', kernel_initializer=It))
     return model
 
 def draw_img(history, num, round):

@@ -18,6 +18,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3" #verbose
 # Load model and data (MobileNetV2, CIFAR-10)
 (x_train, y_train), (x_test, y_test) = uts.load_data(num=cl_num) #read data
 model = uts.new_model(name=uts.sp.model, input_size=x_train.shape[1]) #def model
+model.save('./save-model/model.h5') #save initial model
 model.compile(loss="categorical_crossentropy", optimizer=uts.sp.adam, metrics=["accuracy"]) #compile
 
 # Define Flower client
