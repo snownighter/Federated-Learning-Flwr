@@ -106,7 +106,7 @@ def new_model(name: str, input_size: int):
         model.add(layers.Dense(256, input_dim=input_size, activation='relu', kernel_initializer=It))
         model.add(layers.Dense(256, activation='relu', kernel_initializer=It))
         model.add(layers.Dropout(.2))
-        model.add(layers.Dense(4, activation='softmax', kernel_initializer=It))
+        model.add(layers.Dense(25, activation='softmax', kernel_initializer=It))
     return model
 
 def draw_img(history, num, round):
